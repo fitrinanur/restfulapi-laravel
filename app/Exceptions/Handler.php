@@ -2,11 +2,17 @@
 
 namespace App\Exceptions;
 
+use App\Traits\ApiResponser;
 use Exception;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Symfony\Component\HttpKernel\Exception\HttpException;
+use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class Handler extends ExceptionHandler
 {
+    use ApiResponser;
     /**
      * A list of the exception types that are not reported.
      *
@@ -48,6 +54,43 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
-        return parent::render($request, $exception);
+        $response = $this->handleException($request, $exception);
+
+        return $response;
+
+//        return parent::render($request, $exception);
     }
+
+    public function handleException($request, Exception $exception)
+    {
+
+        /**
+         * ModelNotFoundException
+         */
+        if ($exception instanceof ModelNotFoundException) {
+            $modelName = strtolower(class_basename($exception->getModel()));
+            return $this->errorResponse("Does not exists any {$modelName} with the specified identificator", 404);
+        }
+
+        /**
+         * NotFoundHttpException
+         */
+        if ($exception instanceof NotFoundHttpException) {
+            return $this->errorResponse('The specified URL cannot be found', 404);
+        }
+
+        /**
+         * MethodNotAllowedHttpException
+         */
+        if ($exception instanceof MethodNotAllowedHttpException) {
+            return $this->errorResponse('The specified method for the request is invalid', 405);
+        }
+        /**
+         * HttpException
+         */
+        if ($exception instanceof HttpException) {
+            return $this->errorResponse($exception->getMessage(), $exception->getStatusCode());
+        }
+    }
+
 }
