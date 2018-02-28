@@ -2,24 +2,23 @@
 
 namespace App\Http\Controllers\Seller;
 
+use App\Http\Controllers\ApiController;
 use App\Seller;
 use Illuminate\Http\Request;
-use App\Http\Controllers\ApiController;
-use Illuminate\Http\Response;
+use App\Http\Controllers\Controller;
 
-
-class SellerController extends ApiController
+class SellerTransactionController extends ApiController
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Seller $seller)
     {
-        $seller = Seller::has('products')->get();
+        $transactions = $seller->products()->whereHas('transactions')->get()->pluck('transactions')->collapse();
 
-        return $this->showAll($seller);
+        return $this->showAll($transactions);
     }
 
     /**
@@ -27,10 +26,10 @@ class SellerController extends ApiController
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
-        //
-    }
+//    public function create()
+//    {
+//        //
+//    }
 
     /**
      * Store a newly created resource in storage.
@@ -38,55 +37,53 @@ class SellerController extends ApiController
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
-        //
-    }
+//    public function store(Request $request)
+//    {
+//        //
+//    }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Seller  $seller
      * @return \Illuminate\Http\Response
      */
-    public function show(Seller $seller)
-    {
-//        $sellers = Seller::has('products')->findOrFail($id);
-
-        return $this->showOne($seller);
-    }
+//    public function show(Seller $seller)
+//    {
+//        //
+//    }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Seller  $seller
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
-    {
-        //
-    }
+//    public function edit(Seller $seller)
+//    {
+//        //
+//    }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \App\Seller  $seller
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
-    {
-        //
-    }
+//    public function update(Request $request, Seller $seller)
+//    {
+//        //
+//    }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  \App\Seller  $seller
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
-    {
-        //
-    }
+//    public function destroy(Seller $seller)
+//    {
+//        //
+//    }
 }

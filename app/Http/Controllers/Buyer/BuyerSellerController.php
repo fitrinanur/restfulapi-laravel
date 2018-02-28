@@ -1,23 +1,22 @@
 <?php
 
-namespace App\Http\Controllers\Seller;
+namespace App\Http\Controllers\Buyer;
 
-use App\Seller;
-use Illuminate\Http\Request;
+use App\Buyer;
 use App\Http\Controllers\ApiController;
-use Illuminate\Http\Response;
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
-
-class SellerController extends ApiController
+class BuyerSellerController extends ApiController
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Buyer $buyer)
     {
-        $seller = Seller::has('products')->get();
+        $seller = $buyer->transactions()->with('product.seller')->get()->pluck('product.seller')->unique('id')->values();
 
         return $this->showAll($seller);
     }
@@ -46,23 +45,21 @@ class SellerController extends ApiController
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Buyer  $buyer
      * @return \Illuminate\Http\Response
      */
-    public function show(Seller $seller)
+    public function show(Buyer $buyer)
     {
-//        $sellers = Seller::has('products')->findOrFail($id);
-
-        return $this->showOne($seller);
+        //
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Buyer  $buyer
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Buyer $buyer)
     {
         //
     }
@@ -71,10 +68,10 @@ class SellerController extends ApiController
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \App\Buyer  $buyer
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Buyer $buyer)
     {
         //
     }
@@ -82,10 +79,10 @@ class SellerController extends ApiController
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  \App\Buyer  $buyer
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Buyer $buyer)
     {
         //
     }

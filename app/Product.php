@@ -4,11 +4,15 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Category;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Product extends Model
 {
+    use SoftDeletes;
+
     const AVAILABLE_PRODUCT = 'available';
     const UNAVAILABLE_PRODUCT = 'unavailable';
+
     protected $fillable = [
         'name',
         'description',
@@ -17,6 +21,9 @@ class Product extends Model
         'image',
         'seller_id',
     ];
+
+    protected $dates = [ 'deleted_at'];
+    protected $hidden = ['pivot'];
 
     /**
      * @return bool
@@ -37,7 +44,7 @@ class Product extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function sellers()
+    public function seller()
     {
         return $this->belongsTo(Seller::class);
     }

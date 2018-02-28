@@ -1,25 +1,24 @@
 <?php
 
-namespace App\Http\Controllers\Seller;
+namespace App\Http\Controllers\Product;
 
-use App\Seller;
-use Illuminate\Http\Request;
 use App\Http\Controllers\ApiController;
-use Illuminate\Http\Response;
+use App\Product;
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
-
-class SellerController extends ApiController
+class ProductTransactionController extends ApiController
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Product $product)
     {
-        $seller = Seller::has('products')->get();
+        $transactions = $product->transactions;
 
-        return $this->showAll($seller);
+        return $this->showAll($transactions);
     }
 
     /**
@@ -46,23 +45,21 @@ class SellerController extends ApiController
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function show(Seller $seller)
+    public function show(Product $product)
     {
-//        $sellers = Seller::has('products')->findOrFail($id);
-
-        return $this->showOne($seller);
+        //
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Product $product)
     {
         //
     }
@@ -71,10 +68,10 @@ class SellerController extends ApiController
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \App\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Product $product)
     {
         //
     }
@@ -82,10 +79,10 @@ class SellerController extends ApiController
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  \App\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Product $product)
     {
         //
     }
